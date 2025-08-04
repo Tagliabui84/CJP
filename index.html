@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carlos JP - Soluções Financeiras</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background-image: url("pedra-do-pontal-na-praia-recreio-rocha-de-em-um-belo-céu-azul-atrás-tirada-dos-bandeirantes-rio-janeiro-204861818.webp");
+            background-size: cover;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #4ca1af);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .slogan {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #2c3e50, #4ca1af);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            width: 100%;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f);
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .result h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        
+        .contact {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        
+        .whatsapp-btn {
+            display: inline-block;
+            background-color: #25D366;
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+        
+        .whatsapp-btn:hover {
+            background-color: #128C7E;
+        }
+        
+        .whatsapp-icon {
+            margin-right: 5px;
+        }
+        
+        .error {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="header">
+            <div class="logo">Carlos JP</div>
+            <div class="slogan">Soluções Financeiras</div>
+        </div>
+        
+        <div class="content">
+            <h2>Simulador de Empréstimo</h2>
+            <p>Preencha os dados para simular seu empréstimo.</p>
+            
+            <div class="form-group">
+                <label for="valor">Valor desejado (R$):</label>
+                <input type="number" id="valor" min="100" max="10000" placeholder="100,00 a 10.000,00">
+                <div class="error" id="valor-error">Valor deve estar entre R$100,00 e R$10.000,00</div>
+            </div>
+            
+            <button onclick="calcular()">Simular Empréstimo</button>
+            
+            <div class="result" id="result">
+                <h3>Resultado da Simulação</h3>
+                <p><strong>Valor solicitado:</strong> R$<span id="valor-solicitado">0,00</span></p>
+                <p><strong>Taxa de juros:</strong> <span id="taxa-juros">20</span>%</p>
+                <p><strong>Valor total a pagar:</strong> R$<span id="total-pagar">0,00</span></p>
+                <p><strong>Data de pagamento:</strong> <span id="data-pagamento">-</span></p>
+            </div>
+            
+            <div class="contact">
+                <p>Interessado? Entre em contato:</p>
+                <a href="https://wa.me/5524988088823" class="whatsapp-btn" target="_blank">
+                    <span class="whatsapp-icon">📱</span> WhatsApp
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calcular() {
+            // Obter o valor do empréstimo
+            const valorInput = document.getElementById('valor');
+            const valor = parseFloat(valorInput.value);
+            const valorError = document.getElementById('valor-error');
+            
+            // Validar o valor
+            if (isNaN(valor) || valor < 100 || valor > 10000) {
+                valorError.style.display = 'block';
+                document.getElementById('result').style.display = 'none';
+                return;
+            } else {
+                valorError.style.display = 'none';
+            }
+            
+            // Calcular o valor total com juros de 20%
+            const taxaJuros = 20;
+            const valorTotal = valor * (1 + taxaJuros/100);
+            
+            // Calcular a data de pagamento (30 dias a partir de hoje)
+            const hoje = new Date();
+            const dataPagamento = new Date(hoje);
+            dataPagamento.setDate(hoje.getDate() + 30);
+            
+            // Formatar datas
+            const options = { day: '2-digit', month: '2-digit', year: 'numeric' };
+            const dataFormatada = dataPagamento.toLocaleDateString('pt-BR', options);
+            
+            // Exibir resultados
+            document.getElementById('valor-solicitado').textContent = valor.toFixed(2).replace('.', ',');
+            document.getElementById('taxa-juros').textContent = taxaJuros;
+            document.getElementById('total-pagar').textContent = valorTotal.toFixed(2).replace('.', ',');
+            document.getElementById('data-pagamento').textContent = dataFormatada;
+            
+            // Mostrar o resultado
+            document.getElementById('result').style.display = 'block';
+        }
+        
+        // Adicione seu número de WhatsApp no link
+        document.querySelector('.whatsapp-btn').href = "https://wa.me/5524988088823?text=Olá,%20gostaria%20de%20saber%20mais%20sobre%20os%20empréstimos";
+    </script>
+</body>
+</html>
